@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { ActiveFilters } from "./active-filters"
 
 export interface HeatmapCategory {
   label: string
@@ -33,6 +34,8 @@ export interface HeatmapProps {
   orientation?: "vertical" | "horizontal" | "inline" | "side-by-side" | "drawer" | "resizable" | "enhanced-drawer"
   height?: string
   inline?: boolean
+  showFilters?: boolean
+  filtersVariant?: "default" | "compact" | "inline"
 }
 
 export function Heatmap({
@@ -48,6 +51,8 @@ export function Heatmap({
   orientation = "vertical",
   height = "320px",
   inline = false,
+  showFilters = true,
+  filtersVariant = "default",
 }: HeatmapProps) {
   // Generate categories based on current type and data
   const heatmapCategories = useMemo((): HeatmapCategory[] => {
@@ -180,23 +185,17 @@ export function Heatmap({
         </div>
       )}
 
-      {selectedCategories.length > 0 && (
-        <div className="pt-4 border-t">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium">Active Filters:</span>
-            <Button variant="ghost" size="sm" onClick={onClearFilters}>
-              Clear All
-            </Button>
-          </div>
-          <div className="flex flex-wrap gap-1">
-            {selectedCategories.map((category) => (
-              <Badge key={category} variant="secondary" className="text-xs">
-                {category}
-              </Badge>
-            ))}
-          </div>
-        </div>
+
+      {/* Active Filters - now using the extracted component */}
+      {showFilters && (
+        <ActiveFilters
+          selectedCategories={selectedCategories}
+          onClearFilters={onClearFilters}
+          onRemoveFilter={onCategoryClick}
+          variant={filtersVariant}
+        />
       )}
+
     </div>
   )
 
