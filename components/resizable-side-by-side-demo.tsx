@@ -126,7 +126,7 @@ export function ResizableSideBySideDemo({ accountData, onEditAccount }: Resizabl
           </div>
         </CardHeader>
         <CardContent>
-          <div className="flex h-[500px] border rounded-lg overflow-hidden" ref={containerRef}>
+          <div className="flex max-h-[700px] border rounded-lg overflow-hidden" ref={containerRef}>
             {/* Heatmap Section */}
             <div className="flex flex-col overflow-hidden" style={{ width: `${leftPanelWidth}%` }}>
               <div className="flex items-center gap-2 bg-gray-50 px-4 py-3 border-b">

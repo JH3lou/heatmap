@@ -87,7 +87,7 @@ export function SideBySideDemo({ accountData, onEditAccount }: SideBySideDemoPro
         </CardContent>
       </Card>
 
-      {/* Side-by-Side Layout */}
+      {/* Flexbox Side-by-Side Layout */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -96,13 +96,10 @@ export function SideBySideDemo({ accountData, onEditAccount }: SideBySideDemoPro
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-2">
-            {/* Heatmap Section */}
-            <div className="xl:col-span-1">
-              <div className="flex items-center gap-2 mb-4">
-                <BarChart3 className="h-4 w-4 text-gray-600" />
-                <h4 className="font-medium text-sm text-gray-700">Data Visualization</h4>
-              </div>
+          <div className="flex gap-6">
+            {/* Heatmap Section - Hidden on screens smaller than lg */}
+            <div className="hidden lg:block w-1/3">
+              
               <div className="border-r border-gray-200 pr-6">
                 <Heatmap
                   data={accountData}
@@ -120,18 +117,15 @@ export function SideBySideDemo({ accountData, onEditAccount }: SideBySideDemoPro
               </div>
             </div>
 
-            {/* Visual Divider */}
-            <div className="hidden xl:block w-px bg-gray-200"></div>
-
-            {/* Data Table Section */}
-            <div className="xl:col-span-2">
+            {/* Data Table Section - Flexible growth */}
+            <div className="flex-grow min-w-0">
               <div className="flex items-center justify-between mb-4">
                 <h4 className="font-medium text-sm text-gray-700">Account Details</h4>
                 <Badge variant="secondary" className="text-xs">
                   {finalFilteredAccounts.length} filtered results
                 </Badge>
               </div>
-              <div className="overflow-x-auto max-h-[400px] overflow-y-auto border rounded-lg">
+              <div className="overflow-x-auto overflow-y-auto border rounded-lg">
                 <Table>
                   <TableHeader className="sticky top-0 bg-white z-10">
                     <TableRow>
