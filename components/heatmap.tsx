@@ -31,7 +31,7 @@ export interface HeatmapProps {
   onClearFilters: () => void
   title?: string
   className?: string
-  orientation?: "vertical" | "horizontal" | "inline" | "side-by-side" | "drawer" | "resizable" | "enhanced-drawer"
+  orientation?: "vertical" | "horizontal" | "inline" | "side-by-side" | "drawer" | "resizable" | "enhanced-drawer" | "sortable"
   height?: string
   inline?: boolean
   showFilters?: boolean

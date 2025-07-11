@@ -138,7 +138,7 @@ export default function AccountHeatmapDashboard() {
   const [searchTerm, setSearchTerm] = useState("")
   const [editingAccount, setEditingAccount] = useState<Account | null>(null)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
-  const [layout, setLayout] = useState<"vertical" | "horizontal" | "inline" | "side-by-side" | "drawer" | "resizable">(
+  const [layout, setLayout] = useState<"vertical" | "horizontal" | "inline" | "side-by-side" | "drawer" | "resizable" | "sortable">(
     "vertical",
   )
 

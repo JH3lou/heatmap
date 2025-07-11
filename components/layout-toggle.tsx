@@ -6,8 +6,8 @@ import { Badge } from "@/components/ui/badge"
 import { LayoutGrid, Rows3, Columns, PanelRight, GripVertical } from "lucide-react"
 
 export interface LayoutToggleProps {
-  layout: "vertical" | "horizontal" | "inline" | "side-by-side" | "drawer" | "resizable"
-  onLayoutChange: (layout: "vertical" | "horizontal" | "inline" | "side-by-side" | "drawer" | "resizable") => void
+  layout: "vertical" | "horizontal" | "inline" | "side-by-side" | "drawer" | "resizable" | "sortable"
+  onLayoutChange: (layout: "vertical" | "horizontal" | "inline" | "side-by-side" | "drawer" | "resizable" | "sortable") => void
 }
 
 export function LayoutToggle({ layout, onLayoutChange }: LayoutToggleProps) {
@@ -25,6 +25,8 @@ export function LayoutToggle({ layout, onLayoutChange }: LayoutToggleProps) {
         return "Heatmap accessible via a sliding drawer overlay"
       case "resizable":
         return "Heatmap and table side-by-side with adjustable sizing via draggable divider"
+      case "sortable":
+        return "Heatmap and table with sortable columns for dynamic reordering and traditional togglable filters"
       default:
         return ""
     }
@@ -44,6 +46,8 @@ export function LayoutToggle({ layout, onLayoutChange }: LayoutToggleProps) {
         return "Drawer"
       case "resizable":
         return "Resizable"
+      case "sortable":
+        return "Sortable"
       default:
         return ""
     }
@@ -61,14 +65,14 @@ export function LayoutToggle({ layout, onLayoutChange }: LayoutToggleProps) {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-2 mb-4">
+        <div className="grid grid-cols-2 md:grid-cols-7 gap-2 mb-4">
           <Button
             variant={layout === "vertical" ? "default" : "outline"}
             size="sm"
             onClick={() => onLayoutChange("vertical")}
             className="flex items-center gap-2"
           >
-            <LayoutGrid className="h-4 w-4" />
+            <LayoutGrid className="h-4 w-3" />
             Sidebar
           </Button>
           <Button
@@ -77,7 +81,7 @@ export function LayoutToggle({ layout, onLayoutChange }: LayoutToggleProps) {
             onClick={() => onLayoutChange("horizontal")}
             className="flex items-center gap-2"
           >
-            <Rows3 className="h-4 w-4" />
+            <Rows3 className="h-4 w-3" />
             Top Bar
           </Button>
           <Button
@@ -86,7 +90,7 @@ export function LayoutToggle({ layout, onLayoutChange }: LayoutToggleProps) {
             onClick={() => onLayoutChange("inline")}
             className="flex items-center gap-2"
           >
-            <LayoutGrid className="h-4 w-4" />
+            <LayoutGrid className="h-4 w-3" />
             Inline
           </Button>
           <Button
@@ -95,7 +99,7 @@ export function LayoutToggle({ layout, onLayoutChange }: LayoutToggleProps) {
             onClick={() => onLayoutChange("side-by-side")}
             className="flex items-center gap-2"
           >
-            <Columns className="h-4 w-4" />
+            <Columns className="h-4 w-3" />
             Side-by-Side
           </Button>
           <Button
@@ -104,7 +108,7 @@ export function LayoutToggle({ layout, onLayoutChange }: LayoutToggleProps) {
             onClick={() => onLayoutChange("drawer")}
             className="flex items-center gap-2"
           >
-            <PanelRight className="h-4 w-4" />
+            <PanelRight className="h-4 w-3" />
             Drawer
           </Button>
           <Button
@@ -113,8 +117,17 @@ export function LayoutToggle({ layout, onLayoutChange }: LayoutToggleProps) {
             onClick={() => onLayoutChange("resizable")}
             className="flex items-center gap-2"
           >
-            <GripVertical className="h-4 w-4" />
+            <GripVertical className="h-4 w-3" />
             Resizable
+          </Button>
+          <Button
+            variant={layout === "sortable" ? "default" : "outline"}
+            size="sm"
+            onClick={() => onLayoutChange("sortable")}
+            className="flex items-center gap-2"
+          >
+            <GripVertical className="h-4 w-3" />
+            Sortable
           </Button>
         </div>
 

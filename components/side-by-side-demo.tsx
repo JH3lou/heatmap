@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input"
 import { Search, Filter, Edit, BarChart3 } from "lucide-react"
 import { Heatmap } from "@/components/heatmap"
 import { useHeatmap } from "@/hooks/use-heatmap"
+import { ActiveFilters } from "@/components/active-filters"
+
 import { accountHeatmapConfig, type Account } from "@/config/account-heatmap-config"
 
 interface SideBySideDemoProps {
@@ -67,35 +69,55 @@ export function SideBySideDemo({ accountData, onEditAccount }: SideBySideDemoPro
 
   return (
     <div className="space-y-6">
-      {/* Search Bar */}
-      <Card>
-        <CardContent className="pt-6">
-          <div className="flex items-center gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-              <Input
-                placeholder="Search accounts, numbers, or advisors..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-            <Badge variant="outline" className="whitespace-nowrap">
-              {finalFilteredAccounts.length} of {accountData.length} accounts
-            </Badge>
-          </div>
-        </CardContent>
-      </Card>
+      
 
       {/* Flexbox Side-by-Side Layout */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className="flex items-center gap-2 pt-4">
             <Filter className="h-5 w-5" />
             Account Analysis - Side by Side View
           </CardTitle>
+          
+          {/* make this a 1-col grid when no filters, 3-col when there are */}
+    <div
+      className={`grid ${
+        selectedCategories.length > 0 ? "grid-cols-3" : "grid-cols-1"
+      } gap-4 items-center border-t border-gray-200`}
+    >
+      {/* only render the filters column if you actually have filters */}
+      {selectedCategories.length > 0 && (
+        <div className="col-span-1 border-r border-gray-200 pr-6">
+          <ActiveFilters
+            selectedCategories={selectedCategories}
+            onClearFilters={clearFilters}
+            onRemoveFilter={handleCategoryClick}
+            variant="compact"
+          />
+        </div>
+      )}
+
+      {/* search bar: when no filters, span full (1 of 1); else, span 2 of 3 */}
+      <div
+        className={
+          selectedCategories.length > 0 ? "col-span-2" : "col-span-1"
+        }
+      >
+        <div className="relative w-full pt-4">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+          <Input
+            placeholder="Search accounts, numbers, or advisors..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 w-full"
+          />
+        </div>
+      </div>
+    </div>
+    
         </CardHeader>
         <CardContent>
+        
           <div className="flex gap-6">
             {/* Heatmap Section - Hidden on screens smaller than lg */}
             <div className="hidden lg:block w-1/3">
@@ -112,6 +134,7 @@ export function SideBySideDemo({ accountData, onEditAccount }: SideBySideDemoPro
                   orientation="vertical"
                   height="400px"
                   inline={true}
+                  showFilters={false}
                   className="space-y-3"
                 />
               </div>
