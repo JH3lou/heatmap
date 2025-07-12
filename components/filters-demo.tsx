@@ -114,6 +114,21 @@ export function FiltersDemo() {
               />
             </div>
           </div>
+
+          {/* Without individual remove */}
+          <div>
+            <h4 className="text-sm font-medium mb-2">Show With No Active Filters:</h4>
+            <div className="border rounded-lg p-4 bg-gray-50">
+              <ActiveFilters
+                selectedCategories={selectedCategories}
+                onClearFilters={handleClearFilters}
+                onRemoveFilter={handleRemoveFilter}
+                title="Active Filters:"
+                showWhenEmpty={true}
+              />
+            </div>
+          </div>
+          
         </CardContent>
       </Card>
     </div>
