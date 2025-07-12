@@ -205,10 +205,7 @@ export function Heatmap({
   } else {
     return (
       <Card className={className}>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-lg">{title}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">{heatmapContent}</CardContent>
+        <CardContent className="center">{heatmapContent}</CardContent>
       </Card>
     )
   }

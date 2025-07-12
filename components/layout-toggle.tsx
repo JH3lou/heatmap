@@ -1,137 +1,114 @@
-"use client"
-
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { LayoutGrid, Rows3, Columns, PanelRight, GripVertical } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import {
+  Sidebar,
+  BarChart3,
+  Table,
+  SplitSquareHorizontal,
+  PanelRightOpen,
+  Layers,
+  PanelLeftOpen,
+} from "lucide-react"
 
-export interface LayoutToggleProps {
-  layout: "vertical" | "horizontal" | "inline" | "side-by-side" | "drawer" | "resizable" | "sortable"
-  onLayoutChange: (layout: "vertical" | "horizontal" | "inline" | "side-by-side" | "drawer" | "resizable" | "sortable") => void
+interface LayoutOption {
+  id: string
+  label: string
+  icon: React.ComponentType<{ className?: string }>
+  description: string
 }
 
-export function LayoutToggle({ layout, onLayoutChange }: LayoutToggleProps) {
-  const getLayoutDescription = () => {
-    switch (layout) {
-      case "vertical":
-        return "Heatmap displayed as a sidebar with vertical stacked bars"
-      case "horizontal":
-        return "Heatmap displayed as a horizontal bar above the data table"
-      case "inline":
-        return "Heatmaps embedded inline within shared dashboard cards"
-      case "side-by-side":
-        return "Heatmap positioned beside the data table within a shared card"
-      case "drawer":
-        return "Heatmap accessible via a sliding drawer overlay"
-      case "resizable":
-        return "Heatmap and table side-by-side with adjustable sizing via draggable divider"
-      case "sortable":
-        return "Heatmap and table with sortable columns for dynamic reordering and traditional togglable filters"
-      default:
-        return ""
-    }
-  }
+interface LayoutToggleProps {
+  currentLayout: string
+  onLayoutChange: (layout: string) => void
+}
 
-  const getLayoutLabel = () => {
-    switch (layout) {
-      case "vertical":
-        return "Sidebar"
-      case "horizontal":
-        return "Top Bar"
-      case "inline":
-        return "Inline Cards"
-      case "side-by-side":
-        return "Side-by-Side"
-      case "drawer":
-        return "Drawer"
-      case "resizable":
-        return "Resizable"
-      case "sortable":
-        return "Sortable"
-      default:
-        return ""
-    }
-  }
+export function LayoutToggle({
+  currentLayout,
+  onLayoutChange,
+}: LayoutToggleProps) {
+  const layouts: LayoutOption[] = [
+    {
+      id: "vertical",
+      label: "Vertical",
+      icon: Sidebar,
+      description: "Heatmap in a collapsible sidebar panel",
+    },
+    {
+      id: "horizontal",
+      label: "Horizontal",
+      icon: BarChart3,
+      description: "Horizontal heatmap above the data table",
+    },
+    {
+      id: "inline",
+      label: "Inline",
+      icon: Table,
+      description: "Heatmap integrated within table cards",
+    },
+    {
+      id: "side-by-side",
+      label: "Side-by-Side",
+      icon: SplitSquareHorizontal,
+      description: "Heatmap and table displayed side by side",
+    },
+    {
+      id: "drawer",
+      label: "Drawer",
+      icon: PanelRightOpen,
+      description: "Heatmap accessible via a sliding drawer overlay",
+    },
+    {
+      id: "resizable",
+      label: "Resizable",
+      icon: Layers,
+      description: "Side-by-side layout with resizable panels",
+    },
+    {
+      id: "filters",
+      label: "Filters Demo",
+      icon: PanelLeftOpen,
+      description: "Demonstration of the Active Filters component",
+    },
+  ]
+
+  const activeOption = layouts.find((o) => o.id === currentLayout)
 
   return (
     <Card className="mb-6">
-      <CardContent className="pt-6">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-4">
-            <h3 className="text-lg font-semibold">Layout Demonstrations</h3>
-            <Badge variant="outline" className="text-xs">
-              Current: {getLayoutLabel()}
-            </Badge>
-          </div>
-        </div>
+      <CardHeader className="pb-2">
+        <CardTitle className="text-lg">Layout Demonstrations</CardTitle>
+        <p className="text-sm text-gray-600">
+          {activeOption?.description}
+        </p>
+      </CardHeader>
 
-        <div className="grid grid-cols-2 md:grid-cols-7 gap-2 mb-4">
-          <Button
-            variant={layout === "vertical" ? "default" : "outline"}
-            size="sm"
-            onClick={() => onLayoutChange("vertical")}
-            className="flex items-center gap-2"
-          >
-            <LayoutGrid className="h-4 w-3" />
-            Sidebar
-          </Button>
-          <Button
-            variant={layout === "horizontal" ? "default" : "outline"}
-            size="sm"
-            onClick={() => onLayoutChange("horizontal")}
-            className="flex items-center gap-2"
-          >
-            <Rows3 className="h-4 w-3" />
-            Top Bar
-          </Button>
-          <Button
-            variant={layout === "inline" ? "default" : "outline"}
-            size="sm"
-            onClick={() => onLayoutChange("inline")}
-            className="flex items-center gap-2"
-          >
-            <LayoutGrid className="h-4 w-3" />
-            Inline
-          </Button>
-          <Button
-            variant={layout === "side-by-side" ? "default" : "outline"}
-            size="sm"
-            onClick={() => onLayoutChange("side-by-side")}
-            className="flex items-center gap-2"
-          >
-            <Columns className="h-4 w-3" />
-            Side-by-Side
-          </Button>
-          <Button
-            variant={layout === "drawer" ? "default" : "outline"}
-            size="sm"
-            onClick={() => onLayoutChange("drawer")}
-            className="flex items-center gap-2"
-          >
-            <PanelRight className="h-4 w-3" />
-            Drawer
-          </Button>
-          <Button
-            variant={layout === "resizable" ? "default" : "outline"}
-            size="sm"
-            onClick={() => onLayoutChange("resizable")}
-            className="flex items-center gap-2"
-          >
-            <GripVertical className="h-4 w-3" />
-            Resizable
-          </Button>
-          <Button
-            variant={layout === "sortable" ? "default" : "outline"}
-            size="sm"
-            onClick={() => onLayoutChange("sortable")}
-            className="flex items-center gap-2"
-          >
-            <GripVertical className="h-4 w-3" />
-            Sortable
-          </Button>
+      <CardContent className="pt-4">
+        <div className="flex gap-2">
+          {layouts.map(({ id, label, icon: Icon }) => {
+            const isActive = id === currentLayout
+            return (
+              <Button
+                key={id}
+                variant={isActive ? "default" : "outline"}
+                size="sm"
+                className="flex-1 flex items-center justify-center gap-2"
+                onClick={() => onLayoutChange(id)}
+              >
+                <Icon className="h-4 w-4" />
+                {label}
+                {isActive && (
+                  <Badge
+                    variant="secondary"
+                    className="ml-1 text-xs"
+                  >
+                    Current
+                  </Badge>
+                )}
+              </Button>
+            )
+          })}
         </div>
-
-        <p className="text-sm text-gray-600">{getLayoutDescription()}</p>
       </CardContent>
     </Card>
   )

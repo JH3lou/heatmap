@@ -1,5 +1,3 @@
-"use client"
-
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
@@ -12,6 +10,8 @@ export interface ActiveFiltersProps {
   showClearAll?: boolean
   variant?: "default" | "compact" | "inline"
   className?: string
+  /** render header even when no filters are selected */
+  showWhenEmpty?: boolean
 }
 
 export function ActiveFilters({
@@ -22,8 +22,11 @@ export function ActiveFilters({
   showClearAll = true,
   variant = "default",
   className = "",
+  showWhenEmpty = false,
 }: ActiveFiltersProps) {
-  if (selectedCategories.length === 0) {
+  const hasFilters = selectedCategories.length > 0
+  // if no filters and not explicitly showing empty state, render nothing
+  if (!hasFilters && !showWhenEmpty) {
     return null
   }
 
@@ -50,23 +53,31 @@ export function ActiveFilters({
       <div className={headerClasses[variant]}>
         <span className="text-sm font-medium text-gray-700">{title}</span>
         {showClearAll && (
-          <Button variant="ghost" size="sm" onClick={onClearFilters} className="h-6 px-2 text-xs hover:bg-gray-100">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onClearFilters}
+            className="h-6 px-2 text-xs hover:bg-gray-100"
+            disabled={!hasFilters}
+          >
             Clear All
           </Button>
         )}
       </div>
       <div className={badgeContainerClasses[variant]}>
-        {selectedCategories.map((category) => (
-          <Badge
-            key={category}
-            variant="secondary"
-            className={`text-xs ${onRemoveFilter ? "cursor-pointer hover:bg-gray-200 pr-1" : ""}`}
-            onClick={onRemoveFilter ? () => onRemoveFilter(category) : undefined}
-          >
-            {category}
-            {onRemoveFilter && <X className="h-3 w-3 ml-1 hover:text-gray-600" />}
-          </Badge>
-        ))}
+        {hasFilters
+          ? selectedCategories.map((category) => (
+              <Badge
+                key={category}
+                variant="secondary"
+                className={`text-xs ${onRemoveFilter ? "cursor-pointer hover:bg-gray-200 pr-1" : ""}`}
+                onClick={onRemoveFilter ? () => onRemoveFilter(category) : undefined}
+              >
+                {category}
+                {onRemoveFilter && <X className="h-3 w-3 ml-1 hover:text-gray-600" />}
+              </Badge>
+            ))
+          : null}
       </div>
     </div>
   )

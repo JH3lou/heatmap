@@ -1,12 +1,17 @@
-"use client"
-
 import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 import { Input } from "@/components/ui/input"
-import { Search, Filter, Edit, BarChart3 } from "lucide-react"
+import { Search, Filter, Edit } from "lucide-react"
 import { Heatmap } from "@/components/heatmap"
 import { useHeatmap } from "@/hooks/use-heatmap"
 import { ActiveFilters } from "@/components/active-filters"
@@ -43,14 +48,13 @@ export function SideBySideDemo({ accountData, onEditAccount }: SideBySideDemoPro
       account.advisor.toLowerCase().includes(searchTerm.toLowerCase()),
   )
 
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("en-US", {
+  const formatCurrency = (value: number) =>
+    new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(value)
-  }
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -69,59 +73,52 @@ export function SideBySideDemo({ accountData, onEditAccount }: SideBySideDemoPro
 
   return (
     <div className="space-y-6">
-      
-
-      {/* Flexbox Side-by-Side Layout */}
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 pt-4">
+        {/* Header with dynamic grid for filters/search */}
+        <CardHeader className="px-6">
+          <CardTitle className="flex items-center gap-2 py-2 border-b border-gray-200">
             <Filter className="h-5 w-5" />
             Account Analysis - Side by Side View
           </CardTitle>
-          
-          {/* make this a 1-col grid when no filters, 3-col when there are */}
-    <div
-      className={`grid ${
-        selectedCategories.length > 0 ? "grid-cols-3" : "grid-cols-1"
-      } gap-4 items-center border-t border-gray-200`}
-    >
-      {/* only render the filters column if you actually have filters */}
-      {selectedCategories.length > 0 && (
-        <div className="col-span-1 border-r border-gray-200 pr-6">
-          <ActiveFilters
-            selectedCategories={selectedCategories}
-            onClearFilters={clearFilters}
-            onRemoveFilter={handleCategoryClick}
-            variant="compact"
-          />
-        </div>
-      )}
 
-      {/* search bar: when no filters, span full (1 of 1); else, span 2 of 3 */}
-      <div
-        className={
-          selectedCategories.length > 0 ? "col-span-2" : "col-span-1"
-        }
-      >
-        <div className="relative w-full pt-4">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-          <Input
-            placeholder="Search accounts, numbers, or advisors..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 w-full"
-          />
-        </div>
-      </div>
-    </div>
-    
+          {/* Dynamic grid: single column when no filters, two-part grid when filters exist */}
+          <div
+            className={`grid ${
+              selectedCategories.length > 0
+                ? "grid-cols-[1fr_2fr]"
+                : "grid-cols-1"
+            } gap-6 pt-4 `}
+          >
+            {selectedCategories.length > 0 && (
+              <div className="border-r border-gray-200 pr-6">
+                <ActiveFilters
+                  selectedCategories={selectedCategories}
+                  onClearFilters={clearFilters}
+                  onRemoveFilter={handleCategoryClick}
+                  variant="compact"
+                />
+              </div>
+            )}
+
+            <div>
+              <div className="relative w-full">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Input
+                  placeholder="Search accounts, numbers, or advisors…"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10 w-full"
+                />
+              </div>
+            </div>
+          </div>
         </CardHeader>
-        <CardContent>
-        
-          <div className="flex gap-6">
-            {/* Heatmap Section - Hidden on screens smaller than lg */}
-            <div className="hidden lg:block w-1/3">
-              
+
+        {/* Content with fixed two-part grid */}
+        <CardContent className="px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-6">
+            {/* Heatmap column */}
+            <div className="hidden lg:block">
               <div className="border-r border-gray-200 pr-6">
                 <Heatmap
                   data={accountData}
@@ -132,23 +129,22 @@ export function SideBySideDemo({ accountData, onEditAccount }: SideBySideDemoPro
                   onCategoryClick={handleCategoryClick}
                   onClearFilters={clearFilters}
                   orientation="vertical"
-                  height="400px"
-                  inline={true}
+                  height="475px"
+                  inline
                   showFilters={false}
-                  className="space-y-3"
                 />
               </div>
             </div>
 
-            {/* Data Table Section - Flexible growth */}
-            <div className="flex-grow min-w-0">
+            {/* Table column */}
+            <div className="min-w-0">
               <div className="flex items-center justify-between mb-4">
                 <h4 className="font-medium text-sm text-gray-700">Account Details</h4>
                 <Badge variant="secondary" className="text-xs">
                   {finalFilteredAccounts.length} filtered results
                 </Badge>
               </div>
-              <div className="overflow-x-auto overflow-y-auto border rounded-lg">
+              <div className="overflow-x-auto border rounded-lg">
                 <Table>
                   <TableHeader className="sticky top-0 bg-white z-10">
                     <TableRow>
@@ -166,15 +162,17 @@ export function SideBySideDemo({ accountData, onEditAccount }: SideBySideDemoPro
                       <TableRow key={account.id} className="hover:bg-gray-50">
                         <TableCell className="font-medium">{account.name}</TableCell>
                         <TableCell className="font-mono text-sm">{account.accountNumber}</TableCell>
-                        <TableCell className="text-right font-medium">{formatCurrency(account.totalValue)}</TableCell>
+                        <TableCell className="text-right font-medium">
+                          {formatCurrency(account.totalValue)}
+                        </TableCell>
                         <TableCell className="text-right">
                           <span
                             className={`px-2 py-1 rounded text-xs font-medium ${
                               account.cashPercent > 15
                                 ? "bg-blue-100 text-blue-800"
                                 : account.cashPercent < 5
-                                  ? "bg-red-100 text-red-800"
-                                  : "bg-gray-100 text-gray-800"
+                                ? "bg-red-100 text-red-800"
+                                : "bg-gray-100 text-gray-800"
                             }`}
                           >
                             {account.cashPercent.toFixed(1)}%
@@ -186,8 +184,8 @@ export function SideBySideDemo({ accountData, onEditAccount }: SideBySideDemoPro
                               Math.abs(account.driftPercent) > 3
                                 ? "bg-red-100 text-red-800"
                                 : Math.abs(account.driftPercent) > 1
-                                  ? "bg-yellow-100 text-yellow-800"
-                                  : "bg-green-100 text-green-800"
+                                ? "bg-yellow-100 text-yellow-800"
+                                : "bg-green-100 text-green-800"
                             }`}
                           >
                             {account.driftPercent > 0 ? "+" : ""}
@@ -195,7 +193,9 @@ export function SideBySideDemo({ accountData, onEditAccount }: SideBySideDemoPro
                           </span>
                         </TableCell>
                         <TableCell>
-                          <Badge className={getStatusColor(account.status)}>{account.status}</Badge>
+                          <Badge className={getStatusColor(account.status)}>
+                            {account.status}
+                          </Badge>
                         </TableCell>
                         <TableCell>
                           <Button

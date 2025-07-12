@@ -12,6 +12,7 @@ import { useHeatmap } from "@/hooks/use-heatmap"
 import { accountHeatmapConfig, type Account } from "@/config/account-heatmap-config"
 import { useResizablePanels } from "@/hooks/use-resizable-panels"
 import { ResizableDivider } from "@/components/resizable-divider"
+import { ActiveFilters } from "@/components/active-filters"
 
 interface ResizableSideBySideDemoProps {
   accountData: Account[]
@@ -78,7 +79,7 @@ export function ResizableSideBySideDemo({ accountData, onEditAccount }: Resizabl
     <div className="space-y-6">
       {/* Search Bar */}
       <Card>
-        <CardContent className="pt-6">
+        <CardContent className="gap-2">
           <div className="flex items-center gap-4">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -99,7 +100,7 @@ export function ResizableSideBySideDemo({ accountData, onEditAccount }: Resizabl
       {/* Resizable Side-by-Side Layout */}
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-2">
             <CardTitle className="flex items-center gap-2">
               <Filter className="h-5 w-5" />
               Resizable Account Analysis
@@ -124,6 +125,15 @@ export function ResizableSideBySideDemo({ accountData, onEditAccount }: Resizabl
               </Button>
             </div>
           </div>
+          <div className="my-2 mb-2">
+                          <ActiveFilters
+                            selectedCategories={selectedCategories}
+                            onClearFilters={clearFilters}
+                            onRemoveFilter={handleCategoryClick}
+                            variant="default"
+                            showWhenEmpty={true}
+                          />
+                        </div>
         </CardHeader>
         <CardContent>
           <div className="flex max-h-[700px] border rounded-lg overflow-hidden" ref={containerRef}>
@@ -146,6 +156,7 @@ export function ResizableSideBySideDemo({ accountData, onEditAccount }: Resizabl
                   height="400px"
                   inline={true}
                   className="space-y-3"
+                  showFilters={false}
                 />
               </div>
             </div>

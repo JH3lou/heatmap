@@ -76,7 +76,7 @@ export function DrawerDemo({ accountData, onEditAccount }: DrawerDemoProps) {
     <div className="space-y-6">
       {/* Search and Controls */}
       <Card className="shadow-sm border border-gray-200">
-        <CardContent className="pt-6">
+        <CardContent className="gap-2">
           <div className="flex items-center gap-4">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -93,17 +93,6 @@ export function DrawerDemo({ accountData, onEditAccount }: DrawerDemoProps) {
 
             {/* Drawer Toggle Button */}
             <Sheet open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
-              <SheetTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="default"
-                  className="flex items-center gap-2 bg-white hover:bg-gray-50 border-gray-300 px-4 py-2 h-10"
-                >
-                  <BarChart3 className="h-4 w-4" />
-                  Analytics
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
-              </SheetTrigger>
               <SheetContent
                 side="right"
                 className="w-[400px] sm:w-[540px] max-w-[90vw] p-0 flex flex-col border-l border-gray-200"

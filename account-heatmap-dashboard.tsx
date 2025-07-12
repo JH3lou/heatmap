@@ -18,6 +18,7 @@ import { ResizableSideBySideDemo } from "@/components/resizable-side-by-side-dem
 import { useHeatmap } from "@/hooks/use-heatmap"
 import { accountHeatmapConfig, type Account } from "@/config/account-heatmap-config"
 import { accountEditorFields } from "@/config/account-editor-config"
+import { FiltersDemo } from "./components/filters-demo"
 
 // Sample account data
 const initialAccountData: Account[] = [
@@ -138,7 +139,7 @@ export default function AccountHeatmapDashboard() {
   const [searchTerm, setSearchTerm] = useState("")
   const [editingAccount, setEditingAccount] = useState<Account | null>(null)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
-  const [layout, setLayout] = useState<"vertical" | "horizontal" | "inline" | "side-by-side" | "drawer" | "resizable" | "sortable">(
+  const [layout, setLayout] = useState<"vertical" | "horizontal" | "inline" | "side-by-side" | "drawer" | "resizable">(
     "vertical",
   )
 
@@ -226,7 +227,7 @@ export default function AccountHeatmapDashboard() {
     <div className="space-y-6">
       {/* Search and Filters */}
       <Card>
-        <CardContent className="pt-6">
+        <CardContent className="gap-2">
           <div className="flex items-center gap-4">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -356,10 +357,10 @@ export default function AccountHeatmapDashboard() {
 
         {/* Layout Toggle */}
         <LayoutToggle
-          layout={layout}
-          onLayoutChange={(newLayout) => {
-            setLayout(newLayout)
-          }}
+          currentLayout={layout}
+        onLayoutChange={(newLayout) => {
+          setLayout(newLayout as "vertical" | "horizontal" | "inline" | "side-by-side" | "drawer" | "resizable")
+        }}
         />
 
         {/* Content based on layout */}
@@ -385,9 +386,15 @@ export default function AccountHeatmapDashboard() {
         ) : layout === "resizable" ? (
           /* Resizable Side-by-Side Layout Demo */
           <ResizableSideBySideDemo accountData={accountData} onEditAccount={handleEditAccount} />
+        ): layout === "filters" ? (
+          /* Resizable Side-by-Side Layout Demo */
+          <FiltersDemo/>
         ) : (
-          /* Default to Drawer Layout Demo */
-          <DrawerDemo accountData={accountData} onEditAccount={handleEditAccount} />
+                   /* Default to Vertical Layout */
+                  <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    <div className="lg:col-span-1">{renderHeatmap()}</div>
+                    <div className="lg:col-span-3">{renderMainContent()}</div>
+                  </div>
         )}
 
         {/* Edit Account Dialog */}
