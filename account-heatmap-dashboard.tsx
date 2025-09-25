@@ -340,7 +340,7 @@ export default function AccountHeatmapDashboard() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Account Overview</h1>
+            <h1 className="text-3xl font-bold font-red-rose text-gray-900">Account Overview</h1>
             <p className="text-gray-600">Monitor and manage your book of business</p>
           </div>
           <div className="flex items-center gap-2">
