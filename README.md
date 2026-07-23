@@ -8,7 +8,7 @@ The Heatmap Component System is designed to be easily integrated into any data t
 
 ## Reusable Components
 
-### **\`Heatmap\` Component**
+### **`Heatmap` Component**
 - Fully standalone and configurable
 - Accepts data, configuration, and event handlers as props
 - Works with any data type through generic interfaces
@@ -16,18 +16,18 @@ The Heatmap Component System is designed to be easily integrated into any data t
 - **Responsive design with dynamic resizing**
 - Maintains consistent interactivity across orientations
 
-### **\`DataTableEditor\` Component**
+### **`DataTableEditor` Component**
 - Generic editor that works with any data structure
 - Configurable field definitions
 - Supports text, number, and select field types
 - Reusable across different data tables
 
-### **\`useHeatmap\` Hook**
+### **`useHeatmap` Hook**
 - Encapsulates all heatmap logic and state management
 - Handles filtering, category selection, and data processing
 - Reusable across different implementations
 
-### **\`LayoutToggle\` Component**
+### **`LayoutToggle` Component**
 - **NEW**: Demo component for switching between layout orientations
 - Visual feedback for current layout state
 - Easy integration for testing different orientations
@@ -35,8 +35,8 @@ The Heatmap Component System is designed to be easily integrated into any data t
 ## Configuration System
 
 ### **Modular Configuration**
-- \`accountHeatmapConfig.ts\` - Defines all heatmap types and their logic
-- \`accountEditorConfig.ts\` - Defines editable fields and their types
+- `accountHeatmapConfig.ts` - Defines all heatmap types and their logic
+- `accountEditorConfig.ts` - Defines editable fields and their types
 - Easy to extend with new heatmap types or field configurations
 
 ### **Type Safety**
@@ -58,7 +58,7 @@ The Heatmap Component System is designed to be easily integrated into any data t
 
 **Easy Integration**: The heatmap can be dropped into any data table with minimal setup:
 
-\`\`\`tsx
+```tsx
 <Heatmap
   data={yourData}
   config={yourConfig}
@@ -72,37 +72,37 @@ The Heatmap Component System is designed to be easily integrated into any data t
   height="64px" // customizable height
   inline={true} // NEW: removes card wrapper
 />
-\`\`\`
+```
 
 ## Installation
 
 1. Copy the component files to your project:
-   - \`components/heatmap.tsx\`
-   - \`components/data-table-editor.tsx\`
-   - \`components/layout-toggle.tsx\` (for demo purposes)
-   - \`hooks/use-heatmap.ts\`
+   - `components/heatmap.tsx`
+   - `components/data-table-editor.tsx`
+   - `components/layout-toggle.tsx` (for demo purposes)
+   - `hooks/use-heatmap.ts`
 
 2. Install required dependencies:
-\`\`\`bash
+```bash
 npm install @radix-ui/react-dialog @radix-ui/react-select lucide-react
-\`\`\`
+```
 
 ## Quick Start
 
 ### 1. Define Your Data Interface
 
-\`\`\`tsx
+```tsx
 interface YourDataType {
   id: number
   name: string
   status: string
   // ... other fields
 }
-\`\`\`
+```
 
 ### 2. Create Heatmap Configuration
 
-\`\`\`tsx
+```tsx
 import type { HeatmapConfig } from '@/components/heatmap'
 
 export const yourHeatmapConfig: HeatmapConfig = {
@@ -120,11 +120,11 @@ export const yourHeatmapConfig: HeatmapConfig = {
   },
   // ... more heatmap types
 }
-\`\`\`
+```
 
 ### 3. Implement with Layout Options
 
-\`\`\`tsx
+```tsx
 import { Heatmap } from '@/components/heatmap'
 import { LayoutToggle } from '@/components/layout-toggle'
 
@@ -189,7 +189,7 @@ export function YourDashboard() {
     </div>
   )
 }
-\`\`\`
+```
 
 ## API Reference
 
@@ -197,25 +197,25 @@ export function YourDashboard() {
 
 | Prop | Type | Description |
 |------|------|-------------|
-| \`data\` | \`any[]\` | Array of data items to visualize |
-| \`config\` | \`HeatmapConfig\` | Configuration object defining heatmap types |
-| \`selectedType\` | \`string\` | Currently selected heatmap type |
-| \`onTypeChange\` | \`(type: string) => void\` | Handler for heatmap type changes |
-| \`selectedCategories\` | \`string[]\` | Array of selected category labels |
-| \`onCategoryClick\` | \`(category: string) => void\` | Handler for category selection |
-| \`onClearFilters\` | \`() => void\` | Handler to clear all filters |
-| \`title\` | \`string\` | Optional title for the heatmap |
-| \`className\` | \`string\` | Optional CSS classes |
-| **\`orientation\`** | **\`"vertical" \| "horizontal"\`** | **Layout orientation (default: "vertical")** |
-| **\`height\`** | **\`string\`** | **Custom height (default: "320px")** |
+| `data` | `any[]` | Array of data items to visualize |
+| `config` | `HeatmapConfig` | Configuration object defining heatmap types |
+| `selectedType` | `string` | Currently selected heatmap type |
+| `onTypeChange` | `(type: string) => void` | Handler for heatmap type changes |
+| `selectedCategories` | `string[]` | Array of selected category labels |
+| `onCategoryClick` | `(category: string) => void` | Handler for category selection |
+| `onClearFilters` | `() => void` | Handler to clear all filters |
+| `title` | `string` | Optional title for the heatmap |
+| `className` | `string` | Optional CSS classes |
+| **`orientation`** | **`"vertical" \| "horizontal"`** | **Layout orientation (default: "vertical")** |
+| **`height`** | **`string`** | **Custom height (default: "320px")** |
 | **`inline`** | **`boolean`** | **Remove card wrapper for embedding (default: false)** |
 
 ### LayoutToggle Props
 
 | Prop | Type | Description |
 |------|------|-------------|
-| \`layout\` | \`"vertical" \| "horizontal"\` | Current layout orientation |
-| \`onLayoutChange\` | \`(layout: "vertical" \| "horizontal") => void\` | Handler for layout changes |
+| `layout` | `"vertical" \| "horizontal"` | Current layout orientation |
+| `onLayoutChange` | `(layout: "vertical" \| "horizontal") => void` | Handler for layout changes |
 
 ## Orientation Features
 
@@ -267,7 +267,7 @@ export function YourDashboard() {
 
 ### **Responsive Layout Implementation**
 
-\`\`\`tsx
+```tsx
 const useResponsiveLayout = () => {
   const [layout, setLayout] = useState<"vertical" | "horizontal">("vertical")
   
@@ -287,11 +287,11 @@ const useResponsiveLayout = () => {
   
   return { layout, setLayout }
 }
-\`\`\`
+```
 
 ### **Custom Height Configuration**
 
-\`\`\`tsx
+```tsx
 <Heatmap
   orientation="horizontal"
   height="80px" // Taller horizontal bar
@@ -303,9 +303,9 @@ const useResponsiveLayout = () => {
   height="400px" // Taller vertical sidebar
   // ... other props
 />
-\`\`\`
+```
 
-\`\`\`tsx
+```tsx
 // Inline within existing card
 <Card>
   <CardHeader>
@@ -329,7 +329,7 @@ const useResponsiveLayout = () => {
     />
   </CardContent>
 </Card>
-\`\`\`
+```
 
 ## Additional Layout Demonstrations
 
@@ -364,21 +364,21 @@ const useResponsiveLayout = () => {
 
 ### **Side-by-Side Layout**
 
-\`\`\`tsx
+```tsx
 <SideBySideDemo 
   accountData={accountData} 
   onEditAccount={handleEditAccount} 
 />
-\`\`\`
+```
 
 ### **Drawer Layout**
 
-\`\`\`tsx
+```tsx
 <DrawerDemo 
   accountData={accountData} 
   onEditAccount={handleEditAccount} 
 />
-\`\`\`
+```
 
 ### **Resizable Side-by-Side Layout**
 - **Interactive Resizing**: Drag the divider to adjust heatmap and table proportions
@@ -412,16 +412,16 @@ const useResponsiveLayout = () => {
 
 ### **Resizable Layout**
 
-\`\`\`tsx
+```tsx
 <ResizableSideBySideDemo 
   accountData={accountData} 
   onEditAccount={handleEditAccount} 
 />
-\`\`\`
+```
 
 ### **Custom Resizable Hook**
 
-\`\`\`tsx
+```tsx
 const {
   leftPanelWidth,
   rightPanelWidth,
@@ -434,7 +434,7 @@ const {
   minLeftWidth: 20,
   maxLeftWidth: 70,
 })
-\`\`\`
+```
 
 ## Contributing
 
