@@ -1,0 +1,5 @@
+include README.md
+include LICENSE
+recursive-include streamlit_account_heatmap/frontend/build *
+global-exclude *.pyc
+global-exclude __pycache__

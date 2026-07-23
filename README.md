@@ -2,6 +2,17 @@
 
 A comprehensive, reusable heatmap visualization system built with React and TypeScript. This system provides interactive data visualization through both vertical and horizontal stacked bar charts with real-time filtering and editing capabilities.
 
+> **Looking to install and use the component?** This repository root is a Next.js
+> demo/playground. The publishable, framework-agnostic packages live under
+> [`packages/`](./packages):
+>
+> | Package | What it is | Use it in |
+> |---------|-----------|-----------|
+> | [`@jh3lou/account-heatmap`](./packages/heatmap-react) | The reusable React component (npm) | React / Next.js apps |
+> | [`streamlit-account-heatmap`](./packages/streamlit-heatmap) | A bidirectional Streamlit v2 component wrapping the same UI | Streamlit apps |
+>
+> Both are authored by [Justin Helou](https://github.com/JH3lou) and MIT licensed.
+
 ## Overview
 
 The Heatmap Component System is designed to be easily integrated into any data table within your application. It features a modular architecture that supports multiple data types, custom configurations, real-time data updates, and flexible orientation options.

@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "streamlit-account-heatmap"
+version = "0.1.0"
+description = "Interactive, filterable stacked-bar heatmap component for Streamlit."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "Justin Helou", email = "justinhelou96@gmail.com" }]
+maintainers = [{ name = "Justin Helou", email = "justinhelou96@gmail.com" }]
+keywords = ["streamlit", "heatmap", "visualization", "component", "dashboard", "filter"]
+classifiers = [
+    "Framework :: Streamlit",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Visualization",
+]
+dependencies = ["streamlit >= 1.0"]
+
+[project.urls]
+Homepage = "https://github.com/JH3lou/heatmap/tree/main/packages/streamlit-heatmap"
+Repository = "https://github.com/JH3lou/heatmap"
+Issues = "https://github.com/JH3lou/heatmap/issues"
+
+[project.optional-dependencies]
+example = ["pandas"]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["streamlit_account_heatmap*"]
+
+[tool.setuptools.package-data]
+streamlit_account_heatmap = ["frontend/build/**/*"]
