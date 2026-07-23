@@ -1,5 +1,6 @@
 import { defineConfig } from "vite"
 import react from "@vitejs/plugin-react"
+import tailwindcss from "@tailwindcss/vite"
 import path from "path"
 
 // The Streamlit React component is a thin wrapper around the shared source of
@@ -11,7 +12,13 @@ export default defineConfig({
   // Relative base so the built assets resolve correctly when Streamlit serves
   // them from the component's build directory.
   base: "./",
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
+  // Tailwind is handled by the Vite plugin above; provide an inline (empty)
+  // PostCSS config so Vite does not walk up and pick the demo app's root
+  // postcss.config.mjs.
+  css: {
+    postcss: {},
+  },
   resolve: {
     alias: {
       "@heatmap": heatmapSrc,

@@ -1,7 +1,11 @@
+"use client"
+
 import { useMemo } from "react"
-import { Card, CardContent } from "./primitives"
+import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./components/ui/select"
+import { Badge } from "./components/ui/badge"
+import { Button } from "./components/ui/button"
 import { ActiveFilters } from "./active-filters"
-import { cn } from "./lib/utils"
 
 export interface HeatmapCategory {
   label: string
@@ -27,7 +31,7 @@ export interface HeatmapProps {
   onClearFilters: () => void
   title?: string
   className?: string
-  orientation?: "vertical" | "horizontal"
+  orientation?: "vertical" | "horizontal" | "inline" | "side-by-side" | "drawer" | "resizable" | "enhanced-drawer" | "sortable"
   height?: string
   inline?: boolean
   showFilters?: boolean
@@ -62,38 +66,28 @@ export function Heatmap({
       {/* Header section - only show if not inline or if title/controls are needed */}
       {(!inline || title || selectedType) && (
         <div
-          className={cn(
-            "flex gap-3",
-            orientation === "horizontal" ? "flex-row items-center justify-between" : "flex-col",
-            inline ? "mb-4" : "",
-          )}
+          className={`flex ${orientation === "horizontal" ? "flex-row items-center justify-between" : "flex-col"} gap-3 ${inline ? "mb-4" : ""}`}
         >
-          {title && <h3 className={cn("text-lg font-semibold", inline ? "text-base" : "")}>{title}</h3>}
-          <select
-            value={selectedType}
-            onChange={(e) => onTypeChange(e.target.value)}
-            className={cn(
-              "flex h-9 items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400",
-              orientation === "horizontal" ? "w-48" : "w-full",
-              inline ? "text-sm" : "",
-            )}
-          >
-            {Object.entries(config).map(([key, value]) => (
-              <option key={key} value={key}>
-                {value.label}
-              </option>
-            ))}
-          </select>
+          {title && <h3 className={`text-lg font-semibold ${inline ? "text-base" : ""}`}>{title}</h3>}
+          <Select value={selectedType} onValueChange={onTypeChange}>
+            <SelectTrigger className={`${orientation === "horizontal" ? "w-48" : "w-full"} ${inline ? "text-sm" : ""}`}>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {Object.entries(config).map(([key, value]) => (
+                <SelectItem key={key} value={key}>
+                  {value.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       )}
 
       {/* Stacked Bar Chart */}
       <div className="space-y-2">
         <div
-          className={cn(
-            orientation === "horizontal" ? "flex flex-row h-16" : "flex flex-col",
-            "rounded-lg overflow-hidden border border-gray-200",
-          )}
+          className={`${orientation === "horizontal" ? "flex flex-row h-16" : "flex flex-col"} rounded-lg overflow-hidden border`}
           style={{ height: orientation === "horizontal" ? "64px" : height }}
         >
           {heatmapCategories.map((category) => {
@@ -112,11 +106,9 @@ export function Heatmap({
             return (
               <div
                 key={category.label}
-                className={cn(
-                  category.color,
-                  "cursor-pointer transition-all hover:opacity-80 flex items-center justify-center text-white font-medium text-sm relative",
-                  isSelected ? "ring-2 ring-blue-500 ring-inset" : "",
-                )}
+                className={`${category.color} cursor-pointer transition-all hover:opacity-80 flex items-center justify-center text-white font-medium text-sm relative ${
+                  isSelected ? "ring-2 ring-blue-500 ring-inset" : ""
+                }`}
                 style={sizeStyle}
                 onClick={() => onCategoryClick(category.label)}
                 title={`${category.label}: ${category.count} items (${percentage.toFixed(1)}%)`}
@@ -143,7 +135,7 @@ export function Heatmap({
                     )}
                   </>
                 ) : (
-                  // Vertical layout
+                  // Vertical layout (existing)
                   <>
                     {percentage > 20 && (
                       <div className="text-center px-2">
@@ -171,7 +163,7 @@ export function Heatmap({
 
       {/* Legend for horizontal orientation */}
       {orientation === "horizontal" && (
-        <div className="flex flex-wrap gap-2 pt-2 border-t border-gray-200">
+        <div className="flex flex-wrap gap-2 pt-2 border-t">
           {heatmapCategories.map((category) => {
             if (category.count === 0) return null
             const isSelected = selectedCategories.includes(category.label)
@@ -179,14 +171,12 @@ export function Heatmap({
             return (
               <button
                 key={category.label}
-                type="button"
                 onClick={() => onCategoryClick(category.label)}
-                className={cn(
-                  "flex items-center gap-2 px-2 py-1 rounded text-xs transition-all hover:opacity-80",
-                  isSelected ? "ring-2 ring-blue-500" : "",
-                )}
+                className={`flex items-center gap-2 px-2 py-1 rounded text-xs transition-all hover:opacity-80 ${
+                  isSelected ? "ring-2 ring-blue-500" : ""
+                }`}
               >
-                <div className={cn("w-3 h-3 rounded", category.color)}></div>
+                <div className={`w-3 h-3 rounded ${category.color}`}></div>
                 <span className="text-gray-700 font-medium">{category.label}</span>
                 <span className="text-gray-500">({category.count})</span>
               </button>
@@ -195,7 +185,8 @@ export function Heatmap({
         </div>
       )}
 
-      {/* Active Filters */}
+
+      {/* Active Filters - now using the extracted component */}
       {showFilters && (
         <ActiveFilters
           selectedCategories={selectedCategories}
@@ -204,17 +195,18 @@ export function Heatmap({
           variant={filtersVariant}
         />
       )}
+
     </div>
   )
 
   // Conditional rendering based on inline prop
   if (inline) {
     return <div className={className}>{heatmapContent}</div>
+  } else {
+    return (
+      <Card className={className}>
+        <CardContent className="center">{heatmapContent}</CardContent>
+      </Card>
+    )
   }
-
-  return (
-    <Card className={className}>
-      <CardContent>{heatmapContent}</CardContent>
-    </Card>
-  )
 }

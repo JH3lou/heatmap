@@ -1,3 +1,23 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/*
+ * Batteries-included stylesheet for @jh3lou/account-heatmap.
+ *
+ * Includes Tailwind (with Preflight), the tw-animate-css keyframes used by the
+ * Radix Select, the design tokens, and a safelist of the full color palette so
+ * any `bg-*` category color supplied at runtime renders. Import this once if you
+ * are NOT already running Tailwind v4:
+ *
+ *     import "@jh3lou/account-heatmap/styles.css"
+ *
+ * If you already use Tailwind v4, import `theme.css` instead and add the package
+ * to your own `@source` globs.
+ */
+
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "./theme.css";
+
+/* Scan the component source for the utility classes it uses. */
+@source "./**/*.{ts,tsx}";
+
+/* Category colors are supplied at runtime, so force-generate the full palette. */
+@source inline("{bg,text,border,ring}-{slate,gray,zinc,neutral,stone,red,orange,amber,yellow,lime,green,emerald,teal,cyan,sky,blue,indigo,violet,purple,fuchsia,pink,rose}-{50,100,200,300,400,500,600,700,800,900,950}");

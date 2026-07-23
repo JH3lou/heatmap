@@ -5,6 +5,10 @@ data table to get click-to-filter category visualizations with support for
 vertical (sidebar) and horizontal (top-bar) orientations, an inline (no card)
 mode, and active-filter chips.
 
+Built on **shadcn/ui + Radix** primitives (`Card`, `Badge`, `Button`, and a
+Radix `Select`) and styled with **Tailwind v4** design tokens — the exact
+components and tokens from the source app, so it renders identically.
+
 > Authored by [Justin Helou](https://github.com/JH3lou). MIT licensed.
 
 ## Install
@@ -13,33 +17,40 @@ mode, and active-filter chips.
 npm install @jh3lou/account-heatmap
 ```
 
-`react` and `react-dom` (>=18) are peer dependencies.
+`react` and `react-dom` (>=18) are peer dependencies. The Radix/shadcn
+primitives it uses (`@radix-ui/react-select`, `@radix-ui/react-slot`,
+`class-variance-authority`, `lucide-react`, `clsx`, `tailwind-merge`) are
+regular dependencies and installed for you.
 
 ## Styling
 
-The package ships a **self-contained stylesheet** so it works with or without
-Tailwind in your app. Import it once (e.g. in your root layout / entry):
+The package ships **two** stylesheets. Pick one:
+
+**1. Not using Tailwind (or want it to "just work") — import the full stylesheet:**
 
 ```ts
 import "@jh3lou/account-heatmap/styles.css"
 ```
 
-The stylesheet ships **without** Tailwind Preflight, so it will not reset your
-app's base styles. If you already use Tailwind and prefer your own build to
-generate the classes, add the package to your `content` globs instead of
-importing the CSS:
+This is a batteries-included Tailwind v4 build: Preflight + the design tokens +
+the Radix `Select` animations + a safelist of the full color palette (so any
+`bg-*` category color you pass at runtime renders). Because it includes
+Preflight (a global CSS reset), import it high in your tree; in an app that
+already has its own base styles, prefer option 2.
 
-```js
-// tailwind.config.js
-content: [
-  "./node_modules/@jh3lou/account-heatmap/dist/**/*.{js,cjs}",
-  // ...your app
-]
+**2. Already using Tailwind v4 — import the tokens and add the package to your sources:**
+
+```css
+/* your app's Tailwind entry CSS */
+@import "tailwindcss";
+@import "@jh3lou/account-heatmap/theme.css";     /* design tokens, no Preflight */
+@source "./node_modules/@jh3lou/account-heatmap/dist/**/*.{js,cjs}";
 ```
 
-Category colors come from your config at runtime (e.g. `"bg-blue-600"`); the
-shipped stylesheet safelists the full standard Tailwind color palette so any
-`bg-*` you pass renders correctly.
+`theme.css` contains only the design tokens (light + dark) — no Preflight — so
+it won't touch your base styles. Your own Tailwind build generates the utility
+classes. Category colors come from your config at runtime (e.g. `"bg-blue-600"`);
+safelist them (or the whole palette) so they're generated.
 
 ## Quick start
 
@@ -153,8 +164,10 @@ drive `<Heatmap />` and filter your table.
 
 ### Also exported
 
-`ActiveFilters`, `buildConfigFromRules`, and the styled primitives `Card`,
-`CardContent`, `Button`, `Badge` for composing custom layouts.
+`ActiveFilters`, `buildConfigFromRules`, the `cn` class-merge helper, and the
+underlying shadcn/ui + Radix primitives (`Card`/`CardContent`/…, `Button`,
+`Badge`, `Select`/`SelectTrigger`/`SelectContent`/`SelectItem`/…) for composing
+custom layouts with the same look-and-feel.
 
 ## Using this from Streamlit
 
@@ -166,7 +179,7 @@ Python API.
 
 ```bash
 npm install
-npm run build   # emits dist/index.js, dist/index.cjs, dist/index.d.ts, dist/styles.css
+npm run build   # emits dist/index.{js,cjs,d.ts}, dist/styles.css, dist/theme.css
 ```
 
 ## License

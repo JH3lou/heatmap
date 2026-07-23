@@ -1,4 +1,6 @@
-import { Badge, Button, XIcon } from "./primitives"
+import { Badge } from "./components/ui/badge"
+import { Button } from "./components/ui/button"
+import { X } from "lucide-react"
 
 export interface ActiveFiltersProps {
   selectedCategories: string[]
@@ -29,7 +31,7 @@ export function ActiveFilters({
   }
 
   const containerClasses = {
-    default: "pt-4 border-t border-gray-200",
+    default: "pt-4 border-t",
     compact: "py-2",
     inline: "flex items-center gap-4",
   }
@@ -72,7 +74,7 @@ export function ActiveFilters({
                 onClick={onRemoveFilter ? () => onRemoveFilter(category) : undefined}
               >
                 {category}
-                {onRemoveFilter && <XIcon className="h-3 w-3 ml-1 hover:text-gray-600" />}
+                {onRemoveFilter && <X className="h-3 w-3 ml-1 hover:text-gray-600" />}
               </Badge>
             ))
           : null}
