@@ -9,8 +9,8 @@ description = "Interactive, filterable stacked-bar heatmap component for Streaml
 readme = "README.md"
 requires-python = ">=3.8"
 license = { text = "MIT" }
-authors = [{ name = "Justin Helou", email = "justinhelou96@gmail.com" }]
-maintainers = [{ name = "Justin Helou", email = "justinhelou96@gmail.com" }]
+authors = [{ name = "Justin Helou" }]
+maintainers = [{ name = "Justin Helou", }]
 keywords = ["streamlit", "heatmap", "visualization", "component", "dashboard", "filter"]
 classifiers = [
     "Framework :: Streamlit",
