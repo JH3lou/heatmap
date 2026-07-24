@@ -6,7 +6,7 @@ click categories to filter, and read the current selection (and matching row
 indices) back in Python.
 
 Built on the React component
-[`@jh3lou/account-heatmap`](../heatmap-react) — the same component you can use
+[`@jh3lou/account-heatmap`](https://github.com/JH3lou/heatmap/tree/main/packages/heatmap-react) — the same component you can use
 directly in a React app.
 
 > Authored by [Justin Helou](https://github.com/JH3lou). MIT licensed.
@@ -16,6 +16,9 @@ directly in a React app.
 ```bash
 pip install streamlit-account-heatmap
 ```
+
+The wheel includes the compiled frontend. Package users do not need Node.js,
+npm, React, or any other JavaScript dependencies.
 
 ## Usage
 
@@ -110,6 +113,8 @@ drift/variance). The full standard Tailwind color palette is available for the
 
 The frontend is a Vite + React + TypeScript app that reuses the React package
 source directly (via a Vite alias), so there is a single source of truth.
+The JavaScript toolchain below is only needed when developing or rebuilding the
+frontend; it is not needed to install or use the Python package.
 
 ```bash
 cd streamlit_account_heatmap/frontend

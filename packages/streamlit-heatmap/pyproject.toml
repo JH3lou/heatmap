@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.8"
 license = { text = "MIT" }
 authors = [{ name = "Justin Helou" }]
-maintainers = [{ name = "Justin Helou", }]
+maintainers = [{ name = "Justin Helou" }]
 keywords = ["streamlit", "heatmap", "visualization", "component", "dashboard", "filter"]
 classifiers = [
     "Framework :: Streamlit",
