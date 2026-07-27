@@ -1,6 +1,9 @@
 export { Heatmap } from "./heatmap"
 export type { HeatmapProps, HeatmapConfig, HeatmapCategory } from "./heatmap"
 
+export { HeatmapPanel } from "./heatmap-panel"
+export type { HeatmapPanelProps, HeatmapFilterResult } from "./heatmap-panel"
+
 export { useHeatmap } from "./use-heatmap"
 export type { UseHeatmapProps } from "./use-heatmap"
 

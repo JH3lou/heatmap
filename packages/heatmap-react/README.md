@@ -54,6 +54,42 @@ safelist them (or the whole palette) so they're generated.
 
 ## Quick start
 
+The simplest path is `<HeatmapPanel />` — an uncontrolled wrapper that owns its
+own selection state. Pass `data`, `config`, and `initialType`, and read the
+filtered rows back through `onFilter`:
+
+```tsx
+import { HeatmapPanel, type HeatmapConfig } from "@jh3lou/account-heatmap"
+import "@jh3lou/account-heatmap/styles.css"
+import { useState } from "react"
+
+export function Dashboard({ accounts }: { accounts: Account[] }) {
+  const [rows, setRows] = useState(accounts)
+
+  return (
+    <div className="grid grid-cols-4 gap-6">
+      <HeatmapPanel
+        className="col-span-1"
+        data={accounts}
+        config={config}          // see "Declarative config" below
+        initialType="status"
+        title="Accounts"
+        onFilter={({ filteredData }) => setRows(filteredData)}
+      />
+      <table className="col-span-3">{/* render rows */}</table>
+    </div>
+  )
+}
+```
+
+`onFilter` fires on mount and whenever the selection changes, with
+`{ filteredData, selectedType, selectedCategories }`.
+
+### Controlled usage (advanced)
+
+Reach for `<Heatmap />` + `useHeatmap` directly when you need to own the
+selection state yourself — e.g. to sync it to the URL or share it across widgets:
+
 ```tsx
 import { Heatmap, useHeatmap, type HeatmapConfig } from "@jh3lou/account-heatmap"
 import "@jh3lou/account-heatmap/styles.css"
@@ -137,6 +173,14 @@ Supported operators: `>`, `<`, `>=`, `<=`, `==`, `!=`, `between` (`value` is
 
 ## API
 
+### `<HeatmapPanel />` props
+
+The uncontrolled wrapper. Takes `data`, `config`, `initialType`, an optional
+`onFilter` callback, and the same presentation props as `<Heatmap />` (`title`,
+`className`, `orientation`, `height`, `inline`, `showFilters`, `filtersVariant`).
+It manages the selection internally, so you don't pass `selectedType` /
+`selectedCategories` / the handlers.
+
 ### `<Heatmap />` props
 
 | Prop | Type | Default | Description |
@@ -164,7 +208,7 @@ drive `<Heatmap />` and filter your table.
 
 ### Also exported
 
-`ActiveFilters`, `buildConfigFromRules`, the `cn` class-merge helper, and the
+`HeatmapPanel`, `ActiveFilters`, `buildConfigFromRules`, the `cn` class-merge helper, and the
 underlying shadcn/ui + Radix primitives (`Card`/`CardContent`/…, `Button`,
 `Badge`, `Select`/`SelectTrigger`/`SelectContent`/`SelectItem`/…) for composing
 custom layouts with the same look-and-feel.
