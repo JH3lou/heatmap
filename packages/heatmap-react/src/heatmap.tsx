@@ -70,7 +70,11 @@ export function Heatmap({
         >
           {title && <h3 className={`text-lg font-semibold ${inline ? "text-base" : ""}`}>{title}</h3>}
           <Select value={selectedType} onValueChange={onTypeChange}>
-            <SelectTrigger className={`${orientation === "horizontal" ? "w-48" : "w-full"} ${inline ? "text-sm" : ""}`}>
+            <SelectTrigger
+              data-slot="heatmap-type-select"
+              aria-label="Select heatmap type"
+              className={`${orientation === "horizontal" ? "w-48" : "w-full"} ${inline ? "text-sm" : ""}`}
+            >
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -112,11 +116,24 @@ export function Heatmap({
             return (
               <div
                 key={category.label}
+                role="button"
+                tabIndex={0}
+                data-slot="heatmap-segment"
+                data-category={category.label}
+                data-selected={isSelected}
+                aria-pressed={isSelected}
+                aria-label={`${category.label}: ${category.count} items (${percentage.toFixed(1)}%)`}
                 className={`${category.color} cursor-pointer transition-all hover:opacity-80 flex items-center justify-center text-white font-medium text-sm relative min-h-0 min-w-0 overflow-hidden ${
                   isSelected ? "ring-2 ring-blue-500 ring-inset" : ""
                 }`}
                 style={sizeStyle}
                 onClick={() => onCategoryClick(category.label)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault()
+                    onCategoryClick(category.label)
+                  }
+                }}
                 title={`${category.label}: ${category.count} items (${percentage.toFixed(1)}%)`}
               >
                 {/* Content based on size and orientation */}
@@ -177,6 +194,12 @@ export function Heatmap({
             return (
               <button
                 key={category.label}
+                type="button"
+                data-slot="heatmap-legend-item"
+                data-category={category.label}
+                data-selected={isSelected}
+                aria-pressed={isSelected}
+                aria-label={`${category.label}: ${category.count}`}
                 onClick={() => onCategoryClick(category.label)}
                 className={`flex items-center gap-2 px-2 py-1 rounded text-xs transition-all hover:opacity-80 ${
                   isSelected ? "ring-2 ring-blue-500" : ""
@@ -207,10 +230,14 @@ export function Heatmap({
 
   // Conditional rendering based on inline prop
   if (inline) {
-    return <div className={className}>{heatmapContent}</div>
+    return (
+      <div className={className} data-slot="heatmap" data-orientation={orientation} data-type={selectedType}>
+        {heatmapContent}
+      </div>
+    )
   } else {
     return (
-      <Card className={className}>
+      <Card className={className} data-slot="heatmap" data-orientation={orientation} data-type={selectedType}>
         <CardContent className="center">{heatmapContent}</CardContent>
       </Card>
     )
