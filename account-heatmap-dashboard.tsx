@@ -19,6 +19,17 @@ import { useHeatmap } from "@/hooks/use-heatmap"
 import { accountHeatmapConfig, type Account } from "@/config/account-heatmap-config"
 import { accountEditorFields } from "@/config/account-editor-config"
 import { FiltersDemo } from "./components/filters-demo"
+import { ThemePlayground } from "@/components/theme-playground/theme-playground"
+
+type LayoutId =
+  | "vertical"
+  | "horizontal"
+  | "inline"
+  | "side-by-side"
+  | "drawer"
+  | "resizable"
+  | "filters"
+  | "playground"
 
 // Sample account data
 const initialAccountData: Account[] = [
@@ -139,9 +150,7 @@ export default function AccountHeatmapDashboard() {
   const [searchTerm, setSearchTerm] = useState("")
   const [editingAccount, setEditingAccount] = useState<Account | null>(null)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
-  const [layout, setLayout] = useState<"vertical" | "horizontal" | "inline" | "side-by-side" | "drawer" | "resizable">(
-    "vertical",
-  )
+  const [layout, setLayout] = useState<LayoutId>("vertical")
 
   const {
     selectedType,
@@ -218,7 +227,7 @@ export default function AccountHeatmapDashboard() {
       onCategoryClick={handleCategoryClick}
       onClearFilters={clearFilters}
       title="Account Heatmap"
-      orientation={layout}
+      orientation={layout === "horizontal" ? "horizontal" : "vertical"}
       height={layout === "vertical" ? "320px" : "64px"}
     />
   )
@@ -359,7 +368,7 @@ export default function AccountHeatmapDashboard() {
         <LayoutToggle
           currentLayout={layout}
         onLayoutChange={(newLayout) => {
-          setLayout(newLayout as "vertical" | "horizontal" | "inline" | "side-by-side" | "drawer" | "resizable")
+          setLayout(newLayout as LayoutId)
         }}
         />
 
@@ -387,8 +396,11 @@ export default function AccountHeatmapDashboard() {
           /* Resizable Side-by-Side Layout Demo */
           <ResizableSideBySideDemo accountData={accountData} onEditAccount={handleEditAccount} />
         ): layout === "filters" ? (
-          /* Resizable Side-by-Side Layout Demo */
+          /* Active Filters Demo */
           <FiltersDemo/>
+        ) : layout === "playground" ? (
+          /* Theme Playground */
+          <ThemePlayground />
         ) : (
                    /* Default to Vertical Layout */
                   <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">

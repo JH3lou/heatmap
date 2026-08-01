@@ -13,6 +13,10 @@
 # testing
 /coverage
 
+# playwright / local screenshots
+.playwright-mcp/
+/*.png
+
 # next.js
 /.next/
 /out/
