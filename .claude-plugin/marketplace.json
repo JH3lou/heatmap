@@ -1,0 +1,11 @@
+{
+  "name": "heatmap",
+  "owner": { "name": "Justin Helou", "url": "https://github.com/JH3lou" },
+  "plugins": [
+    {
+      "name": "heatmap-devkit",
+      "source": "./packages/heatmap-devkit-plugin",
+      "description": "Skills for building with the account-heatmap components: usage, styling, and testing."
+    }
+  ]
+}
