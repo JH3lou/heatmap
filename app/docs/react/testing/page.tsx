@@ -11,6 +11,7 @@ export default function Page() {
     >
       <DocH2>Locators</DocH2>
       <PropsTable
+        labels={{ name: "Locator", type: "Element" }}
         rows={[
           { name: '[data-slot="heatmap"]', type: "root", description: "Also carries data-orientation and data-type (active type key)." },
           { name: '[data-slot="heatmap-type-select"]', type: "trigger", description: 'The type dropdown. aria-label="Select heatmap type".' },

@@ -70,6 +70,7 @@ const config = buildConfigFromRules({
 
       <DocH2>Rule operators</DocH2>
       <PropsTable
+        labels={{ name: "Operator", type: "Value" }}
         rows={[
           { name: "> < >= <=", type: "number", description: "Numeric comparison against value." },
           { name: "== !=", type: "number | string | boolean", description: "Equality / inequality." },

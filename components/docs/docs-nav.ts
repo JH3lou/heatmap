@@ -31,6 +31,10 @@ export const DOCS_NAV: DocsNavGroup[] = [
       { href: "/docs/streamlit/development", label: "Development" },
     ],
   },
+  {
+    title: "Agents",
+    items: [{ href: "/docs/agents", label: "Agent Skills" }],
+  },
 ]
 
 export const DOCS_FLAT: DocsNavItem[] = DOCS_NAV.flatMap((g) => g.items)
