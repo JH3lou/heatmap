@@ -103,10 +103,16 @@ export function Heatmap({
                 ? { width: `${Math.max(percentage, 8)}%` }
                 : { height: `${Math.max(percentage, 8)}%` }
 
+            // Pick the vertical label detail from the bar's actual pixel height,
+            // not its percentage: 30% of a 120px card is only ~36px and can't
+            // hold a two-line label, whereas 30% of a 320px card can.
+            const verticalBarPx =
+              orientation === "horizontal" ? 0 : ((parseFloat(height) || 320) * Math.max(percentage, 8)) / 100
+
             return (
               <div
                 key={category.label}
-                className={`${category.color} cursor-pointer transition-all hover:opacity-80 flex items-center justify-center text-white font-medium text-sm relative ${
+                className={`${category.color} cursor-pointer transition-all hover:opacity-80 flex items-center justify-center text-white font-medium text-sm relative min-h-0 min-w-0 overflow-hidden ${
                   isSelected ? "ring-2 ring-blue-500 ring-inset" : ""
                 }`}
                 style={sizeStyle}
@@ -135,22 +141,22 @@ export function Heatmap({
                     )}
                   </>
                 ) : (
-                  // Vertical layout (existing)
+                  // Vertical layout — label detail scales with the bar's height in px
                   <>
-                    {percentage > 20 && (
-                      <div className="text-center px-2">
-                        <div className="font-semibold text-base">{category.label}</div>
-                        <div className="text-lg font-bold">({category.count})</div>
+                    {verticalBarPx >= 52 && (
+                      <div className="text-center px-2 leading-tight">
+                        <div className="font-semibold text-sm">{category.label}</div>
+                        <div className="text-sm font-bold">({category.count})</div>
                       </div>
                     )}
-                    {percentage <= 20 && percentage > 10 && (
-                      <div className="text-center px-2">
-                        <div className="font-bold text-lg">({category.count})</div>
+                    {verticalBarPx >= 26 && verticalBarPx < 52 && (
+                      <div className="text-center px-1 leading-none">
+                        <div className="text-xs font-bold">({category.count})</div>
                       </div>
                     )}
-                    {percentage <= 10 && (
-                      <div className="text-center px-2">
-                        <div className="font-bold text-sm">{category.count}</div>
+                    {verticalBarPx < 26 && (
+                      <div className="text-center px-1 leading-none">
+                        <div className="text-[10px] font-bold">{category.count}</div>
                       </div>
                     )}
                   </>

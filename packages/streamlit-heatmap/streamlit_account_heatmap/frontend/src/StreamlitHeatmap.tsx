@@ -17,7 +17,7 @@ interface HeatmapArgs {
   showFilters?: boolean
 }
 
-function StreamlitHeatmap({ args }: ComponentProps) {
+function StreamlitHeatmap({ args, theme }: ComponentProps) {
   const {
     data = [],
     config: rulesConfig = {},
@@ -28,6 +28,12 @@ function StreamlitHeatmap({ args }: ComponentProps) {
     inline = false,
     showFilters = true,
   } = args as HeatmapArgs
+
+  // Follow Streamlit's own light/dark theme. Streamlit passes the active theme
+  // to every component; applying the `dark` class here flips the shared design
+  // tokens (`@custom-variant dark (&:is(.dark *))`) so the heatmap themes with
+  // the surrounding app instead of staying white in dark mode.
+  const isDark = theme?.base === "dark"
 
   const config = useMemo(() => buildConfigFromRules(rulesConfig), [rulesConfig])
 
@@ -94,7 +100,7 @@ function StreamlitHeatmap({ args }: ComponentProps) {
   const clearFilters = () => setSelectedCategories([])
 
   return (
-    <div className="p-1">
+    <div className={`p-1 bg-background text-foreground${isDark ? " dark" : ""}`}>
       <Heatmap
         data={data}
         config={config}
