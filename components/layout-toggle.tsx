@@ -9,6 +9,7 @@ import {
   PanelRightOpen,
   Layers,
   PanelLeftOpen,
+  Palette,
 } from "lucide-react"
 
 interface LayoutOption {
@@ -69,6 +70,12 @@ export function LayoutToggle({
       label: "Filters Demo",
       icon: PanelLeftOpen,
       description: "Demonstration of the Active Filters component",
+    },
+    {
+      id: "playground",
+      label: "Theme Playground",
+      icon: Palette,
+      description: "Restyle the components with shadcn presets across base primitive libraries",
     },
   ]
 

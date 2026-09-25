@@ -1,0 +1,20 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+/* Shared design tokens from the React package (single source of truth). */
+@import "@heatmap/theme.css";
+
+/* Scan this app and the shared heatmap source for utility classes. */
+@source "./**/*.{ts,tsx}";
+@source "../../../../heatmap-react/src/**/*.{ts,tsx}";
+
+/* Category colors are supplied at runtime from the Python config. */
+@source inline("{bg,text,border,ring}-{slate,gray,zinc,neutral,stone,red,orange,amber,yellow,lime,green,emerald,teal,cyan,sky,blue,indigo,violet,purple,fuchsia,pink,rose}-{50,100,200,300,400,500,600,700,800,900,950}");
+
+/* Keep the iframe background transparent so the component blends into the
+   Streamlit app's theme. */
+html,
+body,
+#root {
+  background: transparent;
+  margin: 0;
+}

@@ -1,0 +1,9 @@
+{
+  "name": "heatmap-devkit",
+  "version": "0.1.0",
+  "description": "Skills for building with @jh3lou/account-heatmap (React) and streamlit-account-heatmap: how to use, style, choose the right API, and test the components.",
+  "author": { "name": "Justin Helou", "url": "https://github.com/JH3lou" },
+  "homepage": "https://github.com/JH3lou/heatmap/tree/main/packages/heatmap-devkit-plugin",
+  "license": "MIT",
+  "keywords": ["heatmap", "shadcn", "streamlit", "react", "skills"]
+}

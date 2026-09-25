@@ -19,6 +19,17 @@ import { useHeatmap } from "@/hooks/use-heatmap"
 import { accountHeatmapConfig, type Account } from "@/config/account-heatmap-config"
 import { accountEditorFields } from "@/config/account-editor-config"
 import { FiltersDemo } from "./components/filters-demo"
+import { ThemePlayground } from "@/components/theme-playground/theme-playground"
+
+type LayoutId =
+  | "vertical"
+  | "horizontal"
+  | "inline"
+  | "side-by-side"
+  | "drawer"
+  | "resizable"
+  | "filters"
+  | "playground"
 
 // Sample account data
 const initialAccountData: Account[] = [
@@ -139,9 +150,21 @@ export default function AccountHeatmapDashboard() {
   const [searchTerm, setSearchTerm] = useState("")
   const [editingAccount, setEditingAccount] = useState<Account | null>(null)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
-  const [layout, setLayout] = useState<"vertical" | "horizontal" | "inline" | "side-by-side" | "drawer" | "resizable">(
-    "vertical",
-  )
+  const [layout, setLayout] = useState<LayoutId>("vertical")
+
+  // When on, the heatmap is computed from the search results instead of the
+  // full book — so its category counts follow what you're searching for.
+  const [syncSearchToHeatmap, setSyncSearchToHeatmap] = useState(false)
+
+  const matchesSearch = (account: Account) =>
+    !searchTerm ||
+    account.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    account.accountNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    account.advisor.toLowerCase().includes(searchTerm.toLowerCase())
+
+  const searchedAccounts = accountData.filter(matchesSearch)
+  // The population the heatmap visualizes.
+  const heatmapPopulation = syncSearchToHeatmap ? searchedAccounts : accountData
 
   const {
     selectedType,
@@ -151,19 +174,13 @@ export default function AccountHeatmapDashboard() {
     handleTypeChange,
     clearFilters,
   } = useHeatmap({
-    data: accountData,
+    data: heatmapPopulation,
     config: accountHeatmapConfig,
     initialType: "cash",
   })
 
-  // Apply search filter on top of heatmap filtering
-  const finalFilteredAccounts = heatmapFilteredData.filter(
-    (account) =>
-      !searchTerm ||
-      account.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      account.accountNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      account.advisor.toLowerCase().includes(searchTerm.toLowerCase()),
-  )
+  // Apply search filter on top of heatmap filtering (idempotent when synced).
+  const finalFilteredAccounts = heatmapFilteredData.filter(matchesSearch)
 
   const handleEditAccount = (account: Account) => {
     console.log("Editing account:", account)
@@ -210,7 +227,7 @@ export default function AccountHeatmapDashboard() {
 
   const renderHeatmap = () => (
     <Heatmap
-      data={accountData}
+      data={heatmapPopulation}
       config={accountHeatmapConfig}
       selectedType={selectedType}
       onTypeChange={handleTypeChange}
@@ -218,7 +235,7 @@ export default function AccountHeatmapDashboard() {
       onCategoryClick={handleCategoryClick}
       onClearFilters={clearFilters}
       title="Account Heatmap"
-      orientation={layout}
+      orientation={layout === "horizontal" ? "horizontal" : "vertical"}
       height={layout === "vertical" ? "320px" : "64px"}
     />
   )
@@ -241,6 +258,21 @@ export default function AccountHeatmapDashboard() {
             <Badge variant="outline" className="whitespace-nowrap">
               {finalFilteredAccounts.length} of {accountData.length} accounts
             </Badge>
+            <label
+              data-slot="sync-search-toggle"
+              className="flex cursor-pointer items-center gap-2 whitespace-nowrap text-sm text-gray-600 select-none"
+              title="When on, the heatmap counts only the accounts matching your search"
+            >
+              <input
+                type="checkbox"
+                role="switch"
+                aria-label="Sync heatmap with search"
+                checked={syncSearchToHeatmap}
+                onChange={(e) => setSyncSearchToHeatmap(e.target.checked)}
+                className="h-4 w-4 accent-blue-600"
+              />
+              Sync heatmap with search
+            </label>
           </div>
         </CardContent>
       </Card>
@@ -359,7 +391,7 @@ export default function AccountHeatmapDashboard() {
         <LayoutToggle
           currentLayout={layout}
         onLayoutChange={(newLayout) => {
-          setLayout(newLayout as "vertical" | "horizontal" | "inline" | "side-by-side" | "drawer" | "resizable")
+          setLayout(newLayout as LayoutId)
         }}
         />
 
@@ -387,8 +419,11 @@ export default function AccountHeatmapDashboard() {
           /* Resizable Side-by-Side Layout Demo */
           <ResizableSideBySideDemo accountData={accountData} onEditAccount={handleEditAccount} />
         ): layout === "filters" ? (
-          /* Resizable Side-by-Side Layout Demo */
+          /* Active Filters Demo */
           <FiltersDemo/>
+        ) : layout === "playground" ? (
+          /* Theme Playground */
+          <ThemePlayground />
         ) : (
                    /* Default to Vertical Layout */
                   <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
